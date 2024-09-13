@@ -29,3 +29,12 @@ resource "aws_subnet" "privateSn" {
   }
 }
 
+#internet gw
+
+resource "aws_internet_gateway" "healthApp-igw" {
+  vpc_id = aws_vpc.healthApp.id
+
+  tags = {
+    Name = "healthApp-igw"
+  }
+}
