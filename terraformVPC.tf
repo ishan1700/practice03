@@ -104,7 +104,7 @@ resource "aws_network_acl" "healthApp-pub-nacl" {
 
 #NACL for private subnet
 resource "aws_network_acl" "healthApp-priv-nacl" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.healthApp.id
 
   egress {
     protocol   = "tcp"
