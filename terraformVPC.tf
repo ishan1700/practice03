@@ -77,7 +77,7 @@ resource "aws_route_table_association" "healthApp-private-association" {
 
 #NACL for public subnet
 resource "aws_network_acl" "healthApp-pub-nacl" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.healthApp.id
 
   egress {
     protocol   = "tcp"
