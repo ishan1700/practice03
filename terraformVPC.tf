@@ -63,4 +63,15 @@ resource "aws_route_table" "private-rt" {
   }
 }
 
+#subnet association 
+
+resource "aws_route_table_association" "healthApp-public-association" {
+  subnet_id      = aws_subnet.publicSn.id
+  route_table_id = aws_route_table.public-rt.id
+}
+
+resource "aws_route_table_association" "healthApp-private-association" {
+  subnet_id      = aws_subnet.privateSn.id
+  route_table_id = aws_route_table.private-rt.id
+}
 
