@@ -128,3 +128,14 @@ resource "aws_network_acl" "healthApp-priv-nacl" {
     Name = "healthApp-priv-nacl"
   }
 }
+
+#NACL Subnet Association 
+resource "aws_network_acl_association" "pub-nacl-association" {
+  network_acl_id = aws_network_acl.healthApp-pub-nacl.id
+  subnet_id      = aws_subnet.publicSn.id
+}
+
+resource "aws_network_acl_association" "priv-nacl-association" {
+  network_acl_id = aws_network_acl.healthApp-priv-nacl.id
+  subnet_id      = aws_subnet.privateSn.id
+}
