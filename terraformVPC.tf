@@ -162,7 +162,7 @@ resource "aws_vpc_security_group_ingress_rule" "healthApp-public-sg-ingress-ssh"
 }
 
 resource "aws_vpc_security_group_ingress_rule" "healthApp-public-sg-ingress-http" {
-  security_group_id = aws_security_group.healthApp-web-sg.id
+  security_group_id = aws_security_group.healthApp-public-sg.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
   ip_protocol       = "tcp"
