@@ -141,8 +141,8 @@ resource "aws_network_acl_association" "priv-nacl-association" {
 }
 
 # public security group 
-resource "aws_security_group" "healthApp-web-sg" {
-  name        = "healthApp-web-sg"
+resource "aws_security_group" "healthApp-public-sg" {
+  name        = "healthApp-public-sg"
   description = "Allow SSH and HTTP traffic"
   vpc_id      = aws_vpc.healthApp.id
 
@@ -153,15 +153,15 @@ resource "aws_security_group" "healthApp-web-sg" {
 
 
 #public sg- ingress rule 
-resource "aws_vpc_security_group_ingress_rule" "healthApp-web-sg-ingress-ssh" {
-  security_group_id = aws_security_group.healthApp-web-sg.id
+resource "aws_vpc_security_group_ingress_rule" "healthApp-public-sg-ingress-ssh" {
+  security_group_id = aws_security_group.healthApp-public-sg.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 22
   ip_protocol       = "tcp"
   to_port           = 22
 }
 
-resource "aws_vpc_security_group_ingress_rule" "healthApp-web-sg-ingress-http" {
+resource "aws_vpc_security_group_ingress_rule" "healthApp-public-sg-ingress-http" {
   security_group_id = aws_security_group.healthApp-web-sg.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
@@ -172,8 +172,48 @@ resource "aws_vpc_security_group_ingress_rule" "healthApp-web-sg-ingress-http" {
 
 
 #public sg - egress rule 
-resource "aws_vpc_security_group_egress_rule" "healthApp-web-sg-egress-ssh" {
-  security_group_id = aws_security_group.healthApp-web-sg.id
+resource "aws_vpc_security_group_egress_rule" "healthApp-public-sg-egress-ssh" {
+  security_group_id = aws_security_group.healthApp-public-sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1" # semantically equivalent to all ports
+}
+
+
+
+# private security group 
+resource "aws_security_group" "healthApp-private-sg" {
+  name        = "healthApp-private-sg"
+  description = "Allow SSH and Postgres traffic"
+  vpc_id      = aws_vpc.healthApp.id
+
+  tags = {
+    Name = "healthApp-private-sg"
+  }
+}
+
+
+#private sg- ingress rule 
+resource "aws_vpc_security_group_ingress_rule" "healthApp-private-sg-ingress-ssh" {
+  security_group_id = aws_security_group.healthApp-private-sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 22
+  ip_protocol       = "tcp"
+  to_port           = 22
+}
+
+resource "aws_vpc_security_group_ingress_rule" "healthApp-private-sg-ingress-postgres" {
+  security_group_id = aws_security_group.healthApp-private-sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 5432
+  ip_protocol       = "tcp"
+  to_port           = 5432
+}
+
+
+
+#private sg - egress rule 
+resource "aws_vpc_security_group_egress_rule" "healthApp-private-sg" {
+  security_group_id = aws_security_group.healthApp-private-sg.id
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1" # semantically equivalent to all ports
 }
