@@ -75,3 +75,56 @@ resource "aws_route_table_association" "healthApp-private-association" {
   route_table_id = aws_route_table.private-rt.id
 }
 
+#NACL for public subnet
+resource "aws_network_acl" "healthApp-pub-nacl" {
+  vpc_id = aws_vpc.main.id
+
+  egress {
+    protocol   = "tcp"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 65535
+  }
+
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 65535
+  }
+
+  tags = {
+    Name = "healthApp-pub-nacl"
+  }
+}
+
+#NACL for private subnet
+resource "aws_network_acl" "healthApp-priv-nacl" {
+  vpc_id = aws_vpc.main.id
+
+  egress {
+    protocol   = "tcp"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 65535
+  }
+
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 65535
+  }
+
+  tags = {
+    Name = "healthApp-priv-nacl"
+  }
+}
